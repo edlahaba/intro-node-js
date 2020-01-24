@@ -7,9 +7,13 @@ const path = require('path')
  * this function is blocking, fix that
  * @param {String} name full file name of asset in asset folder
  */
-const findAsset = (name) => {
+const findAsset = (name, cb) => {
   const assetPath = path.join(__dirname, 'assets', name)
-  return fs.readFileSync(assetPath, {encoding: 'utf-8'}).toString()
+
+  return fs.readFile(assetPath, {encoding: 'utf-8'}, (err, data) => {
+    cb.write(data || '');
+    cb.end();
+  });
 }
 
 const hostname = '127.0.0.1'
@@ -24,15 +28,16 @@ const server = http.createServer((req, res) => {
   // this is sloppy, especially with more assets, create a "router"
   if (route === '/') {
     res.writeHead(200, {'Content-Type': 'text/html'})
-    res.write(findAsset('index.html'))
+    findAsset('index.html', res);
     logRequest(method, route, 200)
-    res.end()
   } else {
-    // missing asset should not cause server crash
-    throw new Error('route not found')
-    res.end()
+    try {
+      findAsset(route.replace('/',''), res);
+    } catch(e) {
+      console.log(`resource not found ${e}`)
+      return;
+    }
   }
-  // most important part, send down the asset
 })
 
 server.listen(port, hostname, () => {
