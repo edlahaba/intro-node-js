@@ -5,7 +5,7 @@ const app = require('./api');
 describe('controller', () => {
     describe('/user', () => {
         describe('GET', () => {
-            describe('Welldone request', () => {
+            describe('Sucessful request', () => {
 
                 test('retrieve 200', () => {
                     request(app).get('/user/1').then(response => {
@@ -37,7 +37,7 @@ describe('controller', () => {
         });
 
         describe('DELETE', () => {
-            describe('Welldone request', () => {
+            describe('Sucessful request', () => {
 
                 test('retrieve 200', () => {
                     request(app).delete('/user/1').then(response => {
