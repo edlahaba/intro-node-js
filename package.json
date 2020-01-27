@@ -5,7 +5,8 @@
   "author": "Scott Moss <willscottmoss@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "jest": "^23.6.0"
+    "jest": "^23.6.0",
+    "supertest": "^4.0.2"
   },
   "scripts": {
     "test": "jest"
